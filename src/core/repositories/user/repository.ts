@@ -3,8 +3,15 @@ import { IUser } from 'src/core/domain/entities/user';
 import { RepositoryException } from 'src/core/domain/shared/errors';
 
 export abstract class UserRepository {
-  abstract getUser(): Promise<Either<RepositoryException, IUser>>;
-  abstract updateUser(): Promise<Either<RepositoryException, IUser>>;
-  abstract createUser(): Promise<Either<RepositoryException, IUser>>;
-  abstract deleteUser(): Promise<Either<RepositoryException, void>>;
+  abstract getUser(id: number): Promise<Either<RepositoryException, IUser>>;
+
+  abstract createUser(
+    entity: IUser,
+  ): Promise<Either<RepositoryException, IUser>>;
+
+  abstract updateUser(
+    entity: Partial<IUser>,
+  ): Promise<Either<RepositoryException, IUser>>;
+
+  abstract deleteUser(id: number): Promise<Either<RepositoryException, string>>;
 }

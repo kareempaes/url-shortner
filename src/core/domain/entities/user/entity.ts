@@ -1,15 +1,15 @@
 import { IAuth } from '../auth/entity';
 
 export interface IUser extends IAuth {
-  id?: string;
+  id?: number | undefined;
   name: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
 export class User implements IUser {
+  readonly id?: number | undefined;
   readonly name: string;
-  readonly id?: string | undefined;
   readonly email: string;
   readonly password?: string | undefined;
   readonly createdAt?: Date;

@@ -5,30 +5,23 @@ export class RepositoryException extends Error {
   }
 }
 
-export class RepositoryNotFoundException extends RepositoryException {
+export class EntityException extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'RepositoryNotFoundException';
+    this.name = 'EntityException';
   }
 }
 
-export class RepositoryNotCreatedException extends RepositoryException {
+export class UseCaseException extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'RepositoryNotCreatedException';
+    this.name = 'UseCaseException';
   }
 }
 
-export class RepositoryNotUpdatedException extends RepositoryException {
+export class ControllerException extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'RepositoryNotUpdatedException';
-  }
-}
-
-export class RepositoryNotDeletedException extends RepositoryException {
-  constructor(message: string) {
-    super(message);
-    this.name = 'RepositoryNotDeletedException';
+    this.name = 'ControllerException';
   }
 }

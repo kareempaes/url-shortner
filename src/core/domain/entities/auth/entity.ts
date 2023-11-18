@@ -1,22 +1,21 @@
 export interface IAuth {
   email: string;
-  password: string;
+  password?: string;
 }
 
 export class Auth implements IAuth {
   readonly email: string;
-  readonly password: string;
+  readonly password?: string;
 
-  constructor(obj: IAuth) {
+  private constructor(obj: IAuth) {
     Object.assign(this, obj);
   }
 
-  validate(): boolean {
-    return true;
-  }
-
-  toJSON(): string {
-    return JSON.stringify(this);
+  modify(obj: Partial<IAuth>): Auth {
+    return Auth.New({
+      ...this,
+      ...obj,
+    });
   }
 
   static New(obj: IAuth): Auth {
@@ -24,6 +23,6 @@ export class Auth implements IAuth {
   }
 
   static fromJSON(json: string): Auth {
-    return new this(JSON.parse(json));
+    return this.New(JSON.parse(json));
   }
 }

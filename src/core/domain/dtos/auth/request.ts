@@ -1,4 +1,4 @@
-import { IAuth } from 'src/core/domain/entities';
+import { IAuth } from 'src/core/domain/entities/auth';
 
 export interface IAuthRequest {
   params: any;

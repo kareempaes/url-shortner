@@ -12,8 +12,16 @@ export class UserRepositoryImpl implements UserRepository {
     private readonly userModel: Repository<UserModel>,
   ) {}
 
-  async getUser(id: number): Promise<Either<RepositoryException, IUser>> {
-    const result = await this.userModel.findOneBy({ id });
+  async getUser({
+    id,
+    email,
+  }: {
+    id?: number;
+    email?: string;
+  }): Promise<Either<RepositoryException, IUser>> {
+    const result = await this.userModel.findOne({
+      where: { id, email },
+    });
 
     if (result) {
       return Either.right(User.New(result));

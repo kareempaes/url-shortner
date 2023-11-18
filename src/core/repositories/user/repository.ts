@@ -3,7 +3,13 @@ import { IUser } from 'src/core/domain/entities/user';
 import { RepositoryException } from 'src/core/domain/shared/errors';
 
 export abstract class UserRepository {
-  abstract getUser(id: number): Promise<Either<RepositoryException, IUser>>;
+  abstract getUser({
+    id,
+    email,
+  }: {
+    id?: number;
+    email?: string;
+  }): Promise<Either<RepositoryException, IUser>>;
 
   abstract createUser(
     entity: IUser,

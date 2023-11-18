@@ -1,6 +1,15 @@
 import { IAuth } from 'src/core/domain/entities/auth';
 
-export interface IAuthRequest {
-  metaData: any;
-  data: IAuth;
+export class AuthLoginResponse {
+  token: string;
+  user: IAuth;
+}
+
+export class AuthRegisterResponse {
+  token: string;
+  user: IAuth;
+}
+
+export class AuthLogoutResponse {
+  message: string;
 }

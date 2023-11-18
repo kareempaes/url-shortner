@@ -1,7 +1,30 @@
-import { IAuth } from 'src/core/domain/entities/auth';
+import { IsNotEmpty, IsString } from 'class-validator';
+export class AuthRegisterRequest {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 
-export interface IAuthRequest {
-  params: any;
-  queries: any;
-  data: IAuth;
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+}
+
+export class AuthLoginRequest {
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+}
+
+export class AuthLogoutRequest {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
 }

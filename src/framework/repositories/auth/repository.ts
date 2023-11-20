@@ -14,7 +14,7 @@ export class AuthRepositoryImpl implements AuthRepository {
     const token = await this.jwt.sign(payload);
 
     if (!token) {
-      return Either.left(new RepositoryException('Error signing token'));
+      return Either.left(RepositoryException.New('Error signing token'));
     }
 
     return Either.right(token);

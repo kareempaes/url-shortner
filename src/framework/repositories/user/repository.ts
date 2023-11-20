@@ -27,14 +27,14 @@ export class UserRepositoryImpl implements UserRepository {
       return Either.right(User.New(result));
     }
 
-    return Either.left(new RepositoryException('User not found'));
+    return Either.left(RepositoryException.New('User not found'));
   }
 
   async createUser(entity: IUser): Promise<Either<RepositoryException, IUser>> {
     const user = await this.userModel.findOneBy({ email: entity.email });
 
     if (user) {
-      return Either.left(new RepositoryException('User already exists'));
+      return Either.left(RepositoryException.New('User already exists'));
     }
 
     const result = await this.userModel.save(entity);
@@ -48,7 +48,7 @@ export class UserRepositoryImpl implements UserRepository {
     const user = await this.userModel.findOneBy({ id: entity.id });
 
     if (!user) {
-      return Either.left(new RepositoryException('User not found'));
+      return Either.left(RepositoryException.New('User not found'));
     }
 
     const result = await this.userModel.save(entity);
@@ -60,7 +60,7 @@ export class UserRepositoryImpl implements UserRepository {
     const user = await this.userModel.findOneBy({ id });
 
     if (!user) {
-      return Either.left(new RepositoryException('User not found'));
+      return Either.left(RepositoryException.New('User not found'));
     }
 
     await this.userModel.delete({ id });

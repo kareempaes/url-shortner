@@ -2,6 +2,7 @@ export interface IURL {
   id: string;
   url: string;
   shortUrl: string;
+  count: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -9,6 +10,7 @@ export interface IURL {
 export class URL implements IURL {
   readonly id: string;
   readonly url: string;
+  readonly count: number;
   readonly shortUrl: string;
   readonly createdAt: Date;
   readonly updatedAt: Date;

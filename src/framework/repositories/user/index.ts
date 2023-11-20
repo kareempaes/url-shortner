@@ -1,2 +1,2 @@
 export * from './model';
-export * from './repository_impl';
+export * from './repository';

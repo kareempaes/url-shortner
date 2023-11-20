@@ -1,8 +1,8 @@
 import { Either } from 'monet';
 import { AuthLoginRequest, AuthLoginResponse } from 'src/core/domain/dtos/auth';
-import { AuthRepository } from 'src/core/repositories/auth';
-import { UserRepository } from 'src/core/repositories/user';
-import { AuthUseCase } from 'src/core/use-cases/auth';
+import { AuthUseCase } from './abstraction';
+import { AuthRepository } from 'src/framework/repositories/auth/abstraction';
+import { UserRepository } from 'src/framework/repositories/user/abstraction';
 
 export class AuthUseCaseImpl implements AuthUseCase {
   constructor(

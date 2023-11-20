@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Either } from 'monet';
 import { IUser } from 'src/core/domain/entities/user';
-import { RepositoryException } from 'src/core/domain/shared/errors';
-import { AuthRepository } from 'src/core/repositories/auth';
+import { RepositoryException } from 'src/core/shared/errors';
+import { AuthRepository } from './abstraction';
 
 @Injectable()
 export class AuthRepositoryImpl implements AuthRepository {

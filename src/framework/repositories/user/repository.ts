@@ -1,10 +1,10 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Either } from 'monet';
 import { IUser, User } from 'src/core/domain/entities/user';
-import { RepositoryException } from 'src/core/domain/shared/errors';
-import { UserRepository } from 'src/core/repositories/user';
+import { RepositoryException } from 'src/core/shared/errors';
 import { UserModel } from './model';
 import { Repository } from 'typeorm';
+import { UserRepository } from './abstraction';
 
 export class UserRepositoryImpl implements UserRepository {
   constructor(

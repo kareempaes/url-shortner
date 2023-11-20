@@ -1,6 +1,6 @@
 import { Either } from 'monet';
 import { IUser } from 'src/core/domain/entities/user';
-import { RepositoryException } from 'src/core/domain/shared/errors';
+import { RepositoryException } from 'src/core/shared/errors';
 
 export abstract class UserRepository {
   abstract getUser({

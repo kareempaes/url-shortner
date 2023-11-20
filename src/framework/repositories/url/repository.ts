@@ -4,5 +4,6 @@ import { Injectable } from '@nestjs/common';
 export class URLRepositoryImpl {
   constructor() {}
 
-  async findByURL() {}
+  async findByURL(url: string) {}
+  async findByShortURL(shortURL: string) {}
 }

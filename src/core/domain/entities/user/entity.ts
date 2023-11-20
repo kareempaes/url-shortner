@@ -1,9 +1,10 @@
 import { IAuth } from '../auth/entity';
+import { IClaims } from './claims';
 
 export interface IUser extends IAuth {
   id?: number | undefined;
   name: string;
-  claims?: string[];
+  claims?: IClaims;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -12,7 +13,7 @@ export class User implements IUser {
   readonly id?: number | undefined;
   readonly name: string;
   readonly email: string;
-  readonly claims?: string[];
+  readonly claims?: IClaims;
   readonly password?: string | undefined;
   readonly createdAt?: Date;
   readonly updatedAt?: Date;

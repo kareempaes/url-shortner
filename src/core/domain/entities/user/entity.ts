@@ -3,6 +3,7 @@ import { IAuth } from '../auth/entity';
 export interface IUser extends IAuth {
   id?: number | undefined;
   name: string;
+  claims?: string[];
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -11,6 +12,7 @@ export class User implements IUser {
   readonly id?: number | undefined;
   readonly name: string;
   readonly email: string;
+  readonly claims?: string[];
   readonly password?: string | undefined;
   readonly createdAt?: Date;
   readonly updatedAt?: Date;

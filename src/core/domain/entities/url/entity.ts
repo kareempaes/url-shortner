@@ -1,5 +1,5 @@
 export interface IURL {
-  id?: string;
+  id?: number;
   url: string;
   shortUrl: string;
   count: number;
@@ -8,7 +8,7 @@ export interface IURL {
 }
 
 export class URL implements IURL {
-  readonly id?: string;
+  readonly id?: number;
   readonly url: string;
   readonly count: number;
   readonly shortUrl: string;

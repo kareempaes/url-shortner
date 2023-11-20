@@ -1,5 +1,7 @@
 # Application
-.env
+/.env
+/.data
+
 
 # compiled output
 /dist

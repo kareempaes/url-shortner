@@ -1,7 +1,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import dotenv from 'dotenv';
 
-dotenv.config();
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config();
 
 export class ConfigService {
   constructor(private env: { [k: string]: string | undefined }) {}
@@ -47,3 +47,11 @@ export class ConfigService {
     };
   }
 }
+
+export const configService = new ConfigService(process.env).ensureValues([
+  'POSTGRES_HOST',
+  'POSTGRES_PORT',
+  'POSTGRES_USER',
+  'POSTGRES_PASSWORD',
+  'POSTGRES_DATABASE',
+]);

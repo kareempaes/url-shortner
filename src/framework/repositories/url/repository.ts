@@ -12,21 +12,49 @@ export class URLRepositoryImpl implements URLRepository {
   constructor(
     @InjectRepository(URLModel) private readonly urlModel: Repository<URLModel>,
   ) {}
+
   findByShortURL(url: string): Promise<Either<RepositoryException, IURL>> {
     console.log(url);
     throw new Error('Method not implemented.');
   }
-  createURL(entity: IURL): Promise<Either<RepositoryException, IURL>> {
-    console.log(entity);
-    throw new Error('Method not implemented.');
+
+  async createURL(entity: IURL): Promise<Either<RepositoryException, IURL>> {
+    const url = await this.urlModel.findOne({ where: { url: entity.url } });
+
+    if (url) {
+      return Either.left(RepositoryException.New('URL already exists'));
+    }
+
+    const result = await this.urlModel.save(entity);
+
+    if (!result) {
+      return Either.left(RepositoryException.New('Error creating URL'));
+    }
+
+    return Either.right(URL.New(result));
   }
-  updateURL(entity: IURL): Promise<Either<RepositoryException, IURL>> {
-    console.log(entity);
-    throw new Error('Method not implemented.');
+
+  async updateURL(entity: IURL): Promise<Either<RepositoryException, IURL>> {
+    if (!entity.id) {
+      return Either.left(RepositoryException.New('URL ID not found'));
+    }
+
+    const result = await this.urlModel.save(entity);
+
+    if (!result) {
+      return Either.left(RepositoryException.New('Error updating URL'));
+    }
+
+    return Either.right(URL.New(result));
   }
-  deleteURL(id: string): Promise<Either<RepositoryException, string>> {
-    console.log(id);
-    throw new Error('Method not implemented.');
+
+  async deleteURL(id: string): Promise<Either<RepositoryException, string>> {
+    const result = this.urlModel.delete(id);
+    if (!result) {
+      return Either.left(RepositoryException.New('Error deleting URL'));
+    }
+
+    return Either.right('URL deleted');
   }
 
   async findByURL(url: string): Promise<Either<RepositoryException, IURL>> {

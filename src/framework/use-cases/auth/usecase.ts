@@ -2,6 +2,7 @@ import { Either } from 'monet';
 import {
   AuthLoginRequest,
   AuthLoginResponse,
+  AuthLogoutRequest,
   AuthRegisterRequest,
   AuthRegisterResponse,
 } from 'src/core/domain/dtos/auth';
@@ -24,7 +25,7 @@ export class AuthUseCaseImpl implements AuthUseCase {
   }
 
   async logout(
-    req: AuthLoginRequest,
+    req: AuthLogoutRequest,
   ): Promise<Either<BaseException, AuthLoginResponse>> {
     console.log(req);
     throw new Error('Method not implemented.');

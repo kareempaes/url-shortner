@@ -28,5 +28,5 @@ export class AuthLoginRequest {
 export class AuthLogoutRequest {
   @IsString()
   @IsNotEmpty()
-  id: string;
+  id: number;
 }

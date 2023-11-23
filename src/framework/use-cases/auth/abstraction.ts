@@ -2,6 +2,7 @@ import { Either } from 'monet';
 import {
   AuthLoginRequest,
   AuthLoginResponse,
+  AuthLogoutRequest,
   AuthRegisterRequest,
   AuthRegisterResponse,
 } from 'src/core/domain/dtos/auth';
@@ -16,6 +17,6 @@ export abstract class AuthUseCase {
     req: AuthRegisterRequest,
   ): Promise<Either<BaseException, AuthRegisterResponse>>;
   abstract logout(
-    req: AuthLoginRequest,
+    req: AuthLogoutRequest,
   ): Promise<Either<BaseException, AuthLoginResponse>>;
 }

@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import {
   AuthLoginRequest,
+  AuthLogoutRequest,
   AuthRegisterRequest,
 } from 'src/core/domain/dtos/auth';
 import { AuthUseCase } from 'src/framework/use-cases/auth';
@@ -45,7 +46,7 @@ export class AuthController {
   }
 
   @Post('logout')
-  async logout(@Body() authLogoutRequest: AuthLoginRequest) {
+  async logout(@Body() authLogoutRequest: AuthLogoutRequest) {
     console.log('Controller::AuthLogoutRequest', authLogoutRequest);
 
     const result = await this.authUsecase.logout(authLogoutRequest);

@@ -3,11 +3,8 @@ import {
   Controller,
   HttpCode,
   HttpException,
-  HttpStatus,
   Post,
-  Req,
 } from '@nestjs/common';
-import { Request } from 'express';
 import {
   AuthLoginRequest,
   AuthRegisterRequest,
@@ -26,12 +23,11 @@ export class AuthController {
     const result = await this.authUsecase.login(authLoginRequest);
 
     if (result.isLeft()) {
-      throw new HttpException(result.left(), HttpStatus.BAD_REQUEST);
+      const left = result.left();
+      throw new HttpException(left.message, left.status);
     }
 
-    return {
-      message: 'OK',
-    };
+    return result.right();
   }
 
   @Post('register')
@@ -41,19 +37,24 @@ export class AuthController {
     const result = await this.authUsecase.register(authRegisterRequest);
 
     if (result.isLeft()) {
-      throw new HttpException(result.left(), HttpStatus.BAD_REQUEST);
+      const left = result.left();
+      throw new HttpException(left.message, left.status);
     }
 
-    return {
-      message: 'OK',
-    };
+    return result.right();
   }
 
   @Post('logout')
-  async logout(@Req() req: Request) {
-    console.log(req.body);
-    return {
-      message: 'OK',
-    };
+  async logout(@Body() authLogoutRequest: AuthLoginRequest) {
+    console.log('Controller::AuthLogoutRequest', authLogoutRequest);
+
+    const result = await this.authUsecase.logout(authLogoutRequest);
+
+    if (result.isLeft()) {
+      const left = result.left();
+      throw new HttpException(left.message, left.status);
+    }
+
+    return result.right();
   }
 }

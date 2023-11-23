@@ -5,16 +5,17 @@ import {
   AuthRegisterRequest,
   AuthRegisterResponse,
 } from 'src/core/domain/dtos/auth';
+import { BaseException } from 'src/core/shared/errors';
 
 export abstract class AuthUseCase {
   abstract login(
     req: AuthLoginRequest,
-  ): Promise<Either<Error, AuthLoginResponse>>;
+  ): Promise<Either<BaseException, AuthLoginResponse>>;
 
   abstract register(
     req: AuthRegisterRequest,
-  ): Promise<Either<Error, AuthRegisterResponse>>;
+  ): Promise<Either<BaseException, AuthRegisterResponse>>;
   abstract logout(
     req: AuthLoginRequest,
-  ): Promise<Either<Error, AuthLoginResponse>>;
+  ): Promise<Either<BaseException, AuthLoginResponse>>;
 }

@@ -8,6 +8,7 @@ import {
 import { AuthUseCase } from './abstraction';
 import { AuthRepository } from 'src/framework/repositories/auth/abstraction';
 import { UserRepository } from 'src/framework/repositories/user/abstraction';
+import { BaseException } from 'src/core/shared/errors';
 
 export class AuthUseCaseImpl implements AuthUseCase {
   constructor(
@@ -17,21 +18,21 @@ export class AuthUseCaseImpl implements AuthUseCase {
 
   async register(
     req: AuthRegisterRequest,
-  ): Promise<Either<Error, AuthRegisterResponse>> {
+  ): Promise<Either<BaseException, AuthRegisterResponse>> {
     console.log(req);
     throw new Error('Method not implemented.');
   }
 
   async logout(
     req: AuthLoginRequest,
-  ): Promise<Either<Error, AuthLoginResponse>> {
+  ): Promise<Either<BaseException, AuthLoginResponse>> {
     console.log(req);
     throw new Error('Method not implemented.');
   }
 
   async login(
     req: AuthLoginRequest,
-  ): Promise<Either<Error, AuthLoginResponse>> {
+  ): Promise<Either<BaseException, AuthLoginResponse>> {
     console.log(req);
     throw new Error('Method not implemented.');
     // const userResults = await this.userRepository.getUser({

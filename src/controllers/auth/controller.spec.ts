@@ -10,7 +10,12 @@ import {
 } from 'src/core/domain/dtos/auth';
 import { Role } from 'src/core/shared/constants';
 import { Left, Right } from 'monet';
-import { EntityException } from 'src/core/shared/errors';
+import {
+  EntityException,
+  RepositoryException,
+  UseCaseException,
+} from 'src/core/shared/errors';
+import { HttpException } from '@nestjs/common';
 
 const user = {
   email: 'test@example.com',
@@ -58,19 +63,30 @@ const EntityExceptionStub = (): EntityException => ({
   status: 500,
 });
 
+const RepositoryExceptionStub = (): RepositoryException => ({
+  name: 'RepositoryException',
+  message: 'Test',
+  status: 500,
+});
+
+const UseCaseExceptionStub = (): UseCaseException => ({
+  name: 'UseCaseException',
+  message: 'Test',
+  status: 500,
+});
+
 describe('Authentication Controller', () => {
-  let controller: AuthController;
-  beforeEach(async () => {
-    const moduleRef = Test.createTestingModule({
+  let controllerSuccess: AuthController;
+  let controllerFailure: AuthController;
+
+  beforeAll(async () => {
+    const moduleSuccess = Test.createTestingModule({
       controllers: [AuthController],
       providers: [
         {
           provide: AuthUseCase,
           useValue: {
-            login: jest
-              .fn()
-              .mockResolvedValueOnce(Right(AuthLoginResponseStub()))
-              .mockRejectedValue(Left(EntityExceptionStub())),
+            login: jest.fn().mockResolvedValue(Right(AuthLoginResponseStub())),
             logout: jest
               .fn()
               .mockResolvedValue(Right(AuthLogoutResponseStub())),
@@ -82,36 +98,52 @@ describe('Authentication Controller', () => {
       ],
     }).compile();
 
-    controller = (await moduleRef).get(AuthController);
+    const moduleFailure = Test.createTestingModule({
+      controllers: [AuthController],
+      providers: [
+        {
+          provide: AuthUseCase,
+          useValue: {
+            login: jest.fn().mockResolvedValue(Left(EntityExceptionStub())),
+            logout: jest
+              .fn()
+              .mockResolvedValue(Left(RepositoryExceptionStub())),
+            register: jest.fn().mockResolvedValue(Left(UseCaseExceptionStub())),
+          },
+        },
+      ],
+    }).compile();
+
+    controllerSuccess = (await moduleSuccess).get(AuthController);
+    controllerFailure = (await moduleFailure).get(AuthController);
   });
 
   it('/POST Login', async () => {
-    controller.login(AuthLoginRequestStub()).then(
-      (response) => {
-        expect(response).toEqual(AuthLoginResponseStub());
-      },
-      (error) => {
-        expect(error).toEqual(EntityExceptionStub());
-      },
+    const value = await controllerSuccess.login(AuthLoginRequestStub());
+    expect(value).toEqual(AuthLoginResponseStub());
+
+    expect(
+      (await controllerFailure).login(AuthLoginRequestStub()),
+    ).rejects.toThrow(new HttpException(EntityExceptionStub().message, 500));
+  });
+
+  it('/POST Logout', async () => {
+    const value = await controllerSuccess.logout(AuthLogoutRequestStub());
+    expect(value).toEqual(AuthLogoutResponseStub());
+
+    expect(
+      (await controllerFailure).logout(AuthLogoutRequestStub()),
+    ).rejects.toThrow(
+      new HttpException(RepositoryExceptionStub().message, 500),
     );
   });
 
-  // it('/POST Login Failure', async () => {
-  //   const response = await controller.login(AuthLoginRequestStub());
-  // });
-
-  it('/POST Logout Success', async () => {
-    const response = await controller.logout(AuthLogoutRequestStub());
-    expect(response).toEqual(AuthLogoutResponseStub());
-  });
-
-  it('/POST Logout Failure', async () => {
-    const response = await controller.logout(AuthLogoutRequestStub());
-    expect(response).toEqual(AuthLogoutResponseStub());
-  });
-
   it('/POST Register Success', async () => {
-    const response = await controller.register(AuthRegisterRequestStub());
-    expect(response).toEqual(AuthRegisterResponseStub());
+    const value = await controllerSuccess.register(AuthRegisterRequestStub());
+    expect(value).toEqual(AuthRegisterResponseStub());
+
+    expect(
+      (await controllerFailure).register(AuthRegisterRequestStub()),
+    ).rejects.toThrow(new HttpException(UseCaseExceptionStub().message, 500));
   });
 });

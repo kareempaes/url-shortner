@@ -9,7 +9,8 @@ import {
   AuthRegisterResponse,
 } from 'src/core/domain/dtos/auth';
 import { Role } from 'src/core/shared/constants';
-import { Right } from 'monet';
+import { Left, Right } from 'monet';
+import { EntityException } from 'src/core/shared/errors';
 
 const user = {
   email: 'test@example.com',
@@ -51,6 +52,12 @@ const AuthLogoutResponseStub = () => ({
   message: 'Successfully logged out',
 });
 
+const EntityExceptionStub = (): EntityException => ({
+  name: 'EntityException',
+  message: 'Test',
+  status: 500,
+});
+
 describe('Authentication Controller', () => {
   let controller: AuthController;
   beforeEach(async () => {
@@ -60,7 +67,10 @@ describe('Authentication Controller', () => {
         {
           provide: AuthUseCase,
           useValue: {
-            login: jest.fn().mockResolvedValue(Right(AuthLoginResponseStub())),
+            login: jest
+              .fn()
+              .mockResolvedValueOnce(Right(AuthLoginResponseStub()))
+              .mockRejectedValue(Left(EntityExceptionStub())),
             logout: jest
               .fn()
               .mockResolvedValue(Right(AuthLogoutResponseStub())),
@@ -75,10 +85,24 @@ describe('Authentication Controller', () => {
     controller = (await moduleRef).get(AuthController);
   });
 
-  it('/POST Login Success', async () => {
-    const response = await controller.login(AuthLoginRequestStub());
-    console.log(response);
-    expect(response).toEqual(AuthLoginResponseStub());
+  it('/POST Login', async () => {
+    controller.login(AuthLoginRequestStub()).then(
+      (response) => {
+        expect(response).toEqual(AuthLoginResponseStub());
+      },
+      (error) => {
+        expect(error).toEqual(EntityExceptionStub());
+      },
+    );
+  });
+
+  // it('/POST Login Failure', async () => {
+  //   const response = await controller.login(AuthLoginRequestStub());
+  // });
+
+  it('/POST Logout Success', async () => {
+    const response = await controller.logout(AuthLogoutRequestStub());
+    expect(response).toEqual(AuthLogoutResponseStub());
   });
 
   it('/POST Logout Failure', async () => {

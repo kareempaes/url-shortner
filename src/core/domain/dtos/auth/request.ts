@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 export class AuthRegisterRequest {
   @IsString()
   @IsNotEmpty()
@@ -6,6 +6,7 @@ export class AuthRegisterRequest {
 
   @IsString()
   @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @IsString()
@@ -16,6 +17,7 @@ export class AuthRegisterRequest {
 export class AuthLoginRequest {
   @IsString()
   @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @IsString()

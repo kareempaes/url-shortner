@@ -1,7 +1,11 @@
 export class RepositoryException extends Error {
-  private constructor(message: string) {
+  status: number;
+
+  private constructor(message: string, status: number = 500) {
     super(message);
     this.name = 'RepositoryException';
+    this.status = status;
+    this.stack = new Error().stack;
   }
 
   static New(message: string): RepositoryException {
@@ -10,9 +14,13 @@ export class RepositoryException extends Error {
 }
 
 export class EntityException extends Error {
-  private constructor(message: string) {
+  status: number;
+
+  private constructor(message: string, status: number = 500) {
     super(message);
     this.name = 'EntityException';
+    this.status = status;
+    this.stack = new Error().stack;
   }
 
   static New(message: string): EntityException {
@@ -21,9 +29,13 @@ export class EntityException extends Error {
 }
 
 export class UseCaseException extends Error {
-  private constructor(message: string) {
+  status: number;
+
+  private constructor(message: string, status: number = 500) {
     super(message);
     this.name = 'UseCaseException';
+    this.status = status;
+    this.stack = new Error().stack;
   }
 
   static New(message: string): UseCaseException {
@@ -32,9 +44,13 @@ export class UseCaseException extends Error {
 }
 
 export class ControllerException extends Error {
-  private constructor(message: string) {
+  status: number;
+
+  private constructor(message: string, status: number = 500) {
     super(message);
     this.name = 'ControllerException';
+    this.status = status;
+    this.stack = new Error().stack;
   }
 
   static New(message: string): ControllerException {

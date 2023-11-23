@@ -4,7 +4,7 @@ export class AuthLoginResponse {
   token: string;
   user: IAuth;
 
-  constructor(data: AuthLoginResponse) {
+  private constructor(data: AuthLoginResponse) {
     Object.assign(this, data);
   }
 }

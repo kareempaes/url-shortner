@@ -9,7 +9,7 @@ import {
 import { AuthUseCase } from './abstraction';
 import { AuthRepository } from 'src/framework/repositories/auth/abstraction';
 import { UserRepository } from 'src/framework/repositories/user/abstraction';
-import { BaseException } from 'src/core/shared/errors';
+import { BaseException, EntityException } from 'src/core/shared/errors';
 import { User } from 'src/core/domain/entities/user';
 import { BcryptService } from 'src/framework/services/bcrypt';
 
@@ -25,6 +25,7 @@ export class AuthUseCaseImpl implements AuthUseCase {
   ): Promise<Either<BaseException, AuthRegisterResponse>> {
     const user = User.New(req);
     const hashedPassword = await this.bcryptService.hash(req.password);
+
     user.modify({ password: hashedPassword });
     const userResults = await this.userRepository.createUser(user);
 
@@ -54,24 +55,33 @@ export class AuthUseCaseImpl implements AuthUseCase {
   async login(
     req: AuthLoginRequest,
   ): Promise<Either<BaseException, AuthLoginResponse>> {
-    console.log(req);
-    throw new Error('Method not implemented.');
-    // const userResults = await this.userRepository.getUser({
-    //   email: request.email,
-    // });
+    const userResults = await this.userRepository.getUser({ email: req.email });
 
-    // if (userResults.isLeft()) {
-    //   return Either.left(userResults.left());
-    // }
+    if (userResults.isLeft()) {
+      return Either.left(userResults.left());
+    }
 
-    // const token = await this.authRepository.login(userResults.right());
+    const user = userResults.right();
+    const hash = user.password as string;
 
-    // if (token.isLeft()) {
-    //   return Either.left(token.left());
-    // }
+    const isValidPassword = await this.bcryptService.compare(
+      req.password,
+      hash,
+    );
 
-    // return Either.right({
-    //   token: token.right(),
-    // });
+    if (!isValidPassword) {
+      return Either.left(EntityException.New('Invalid email or password'));
+    }
+
+    const token = await this.authRepository.login(user);
+
+    if (token.isLeft()) {
+      return Either.left(token.left());
+    }
+
+    return Either.right({
+      token: token.right(),
+      user: userResults.right(),
+    });
   }
 }

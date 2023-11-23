@@ -14,39 +14,42 @@ export class AuthUseCaseImpl implements AuthUseCase {
     private readonly authRepository: AuthRepository,
     private readonly userRepository: UserRepository,
   ) {}
-  register(
+
+  async register(
     req: AuthRegisterRequest,
   ): Promise<Either<Error, AuthRegisterResponse>> {
     console.log(req);
     throw new Error('Method not implemented.');
   }
-  logout(req: AuthLoginRequest): Promise<Either<Error, AuthLoginResponse>> {
+
+  async logout(
+    req: AuthLoginRequest,
+  ): Promise<Either<Error, AuthLoginResponse>> {
     console.log(req);
     throw new Error('Method not implemented.');
   }
 
   async login(
-    request: AuthLoginRequest,
+    req: AuthLoginRequest,
   ): Promise<Either<Error, AuthLoginResponse>> {
-    const userResults = await this.userRepository.getUser({
-      email: request.email,
-    });
+    console.log(req);
+    throw new Error('Method not implemented.');
+    // const userResults = await this.userRepository.getUser({
+    //   email: request.email,
+    // });
 
-    if (userResults.isLeft()) {
-      return Either.left(userResults.left());
-    }
+    // if (userResults.isLeft()) {
+    //   return Either.left(userResults.left());
+    // }
 
-    const token = await this.authRepository.login(userResults.right());
+    // const token = await this.authRepository.login(userResults.right());
 
-    if (token.isLeft()) {
-      return Either.left(token.left());
-    }
+    // if (token.isLeft()) {
+    //   return Either.left(token.left());
+    // }
 
-    return Either.right(
-      new AuthLoginResponse({
-        token: token.right(),
-        user: userResults.right(),
-      }),
-    );
+    // return Either.right({
+    //   token: token.right(),
+    // });
   }
 }

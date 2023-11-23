@@ -1,27 +1,41 @@
-import { IAuth } from 'src/core/domain/entities/auth';
+import { IUser } from '../../entities/user';
+
+export interface IAuthLoginResponse {
+  token: string;
+  user: IUser;
+}
 
 export class AuthLoginResponse {
   token: string;
-  user: IAuth;
+  user: IUser;
 
-  private constructor(data: AuthLoginResponse) {
+  private constructor(data: IAuthLoginResponse) {
     Object.assign(this, data);
   }
 }
 
+export interface IAuthRegisterResponse {
+  token: string;
+  user: IUser;
+}
+
 export class AuthRegisterResponse {
   token: string;
-  user: IAuth;
+  user: IUser;
 
-  constructor(data: AuthRegisterResponse) {
+  constructor(data: IAuthRegisterResponse) {
     Object.assign(this, data);
   }
+}
+
+export interface IAuthLogoutResponse {
+  message: string;
 }
 
 export class AuthLogoutResponse {
   message: string;
 
-  constructor(data: AuthLogoutResponse) {
+  constructor(data: IAuthLogoutResponse) {
     Object.assign(this, data);
   }
 }
